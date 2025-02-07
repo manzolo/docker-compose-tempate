@@ -9,11 +9,11 @@ services:
       - PGID=${GID:-1000}
       # Wayland
       - WAYLAND_DISPLAY
-      - XDG_RUNTIME_DIR=/run/user/${PUID:-1000}
-      - DISPLAY
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=all
-      - QT_QPA_PLATFORM=xcb
+      #- XDG_RUNTIME_DIR=/run/user/${PUID:-1000}
+      #- DISPLAY
+      #- NVIDIA_VISIBLE_DEVICES=all
+      #- NVIDIA_DRIVER_CAPABILITIES=all
+      #- QT_QPA_PLATFORM=xcb
     restart: ${RESTART_POLICY}
     #user: ubuntu
     configs:
@@ -82,6 +82,10 @@ services:
     # Per collegare il servizio ad una rete specifica, scommenta e configura:
     # networks:
     #   - my_network
+    
+    #networks:
+    #  my_network:
+    #    ipv4_address: 172.16.238.10
 
 configs:
   my_config:
@@ -90,12 +94,19 @@ configs:
 secrets:
   my_secret:
     file: ./my_secret.txt
-    #cat /run/secrets/my_secret
+    #/run/secrets/my_secret inside container
     
 # Definisci reti o volumi se necessari:
 # networks:
 #   my_network:
 #     external: true
+
+#networks:
+#  my_network:
+#    ipam:
+#      driver: default
+#      config:
+#        - subnet: "172.16.238.0/24"
 
 # volumes:
 #   data_volume:

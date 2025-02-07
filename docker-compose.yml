@@ -1,7 +1,7 @@
 services:
   # My Service description
   MyService:
-    image: ${IMAGE}
+    image: ${IMAGE_NAME}:${IMAGE_TAG}
     container_name: ${CONTAINER_NAME}
     environment:
       # host UID/GID mapping

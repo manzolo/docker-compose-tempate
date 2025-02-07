@@ -53,6 +53,20 @@ uninstall:
 	@echo "Uninstalling..."
 	$(DOCKER_COMPOSE) down && $(DOCKER_COMPOSE) rm -f
 	$(DOCKER_COMPOSE) down --rmi all --volumes
+	
+build:
+	@echo "Image build"
+	docker build \
+	--build-arg CONTAINER_USERNAME=${CONTAINER_USERNAME} \
+	-t ${IMAGE_NAME}:${IMAGE_TAG} .
+	@echo "Image built: ${IMAGE_NAME}:${IMAGE_TAG}"
+	
+build-debug:
+	@echo "Image build"
+	docker build --progress=plain \
+	--build-arg CONTAINER_USERNAME=${CONTAINER_USERNAME} \
+	-t ${IMAGE_NAME}:${IMAGE_TAG} .
+	@echo "Image built: ${IMAGE_NAME}:${IMAGE_TAG}"
 
 help:
 	@echo "Available targets:"

@@ -10,7 +10,7 @@ ifneq (,$(wildcard $(ENV_FILE)))
 endif
 
 
-.PHONY: start enter stop logs pull prepare uninstall
+.PHONY: start build build-debug docker-clean enter stop logs pull prepare uninstall
 
 # Target to start the containers
 start:
@@ -68,12 +68,19 @@ build-debug:
 	-t ${IMAGE_NAME}:${IMAGE_TAG} .
 	@echo "Image built: ${IMAGE_NAME}:${IMAGE_TAG}"
 
+docker-clean:
+	@docker builder prune -f
+	@docker system prune -f
+
 help:
 	@echo "Available targets:"
-	@echo "  start    - Restart Docker Compose containers"
-	@echo "  enter    - Enter a specific container (SERVICE_NAME must be set)"
-	@echo "  stop     - Stop and remove Docker Compose containers"
-	@echo "  logs     - Follow container logs"
-	@echo "  pull     - Pull the latest images"
-	@echo "  prepare  - Prepare the environment by pulling images"
-	@echo "  uninstall- Remove containers, images, and volumes"
+	@echo "  start           - Restart Docker Compose containers"
+	@echo "  enter           - Enter a specific container (SERVICE_NAME must be set)"
+	@echo "  build           - build image"
+	@echo "  build-debug     - build image with --progress=plain option"
+	@echo "  docker-clean    - Exec docker builder prune + docker system prune -f"
+	@echo "  stop            - Stop and remove Docker Compose containers"
+	@echo "  logs            - Follow container logs"
+	@echo "  pull            - Pull the latest images"
+	@echo "  prepare         - Prepare the environment by pulling images"
+	@echo "  uninstall       - Remove containers, images, and volumes"

@@ -1,0 +1,101 @@
+services:
+  # My Service description
+  MyService:
+    image: ${IMAGE}
+    container_name: ${CONTAINER_NAME}
+    environment:
+      # host UID/GID mapping
+      - PUID=${UID:-1000}
+      - PGID=${GID:-1000}
+      # Wayland
+      - WAYLAND_DISPLAY
+      - XDG_RUNTIME_DIR=/run/user/${PUID:-1000}
+      - DISPLAY
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - QT_QPA_PLATFORM=xcb
+    restart: ${RESTART_POLICY}
+    #user: ubuntu
+    configs:
+      - source: my_config
+        target: /etc/my_config
+    secrets:
+      - my_secret
+    volumes:
+      - ./data:/data
+      # Wayland
+      #- /run/user/${PUID:-1000}/${WAYLAND_DISPLAY}:/run/user/${PUID:-1000}/${WAYLAND_DISPLAY}:rw
+      #- /tmp/.X11-unix:/tmp/.X11-unix:ro 
+      
+      # pulseaudio
+      #- /etc/machine-id:/etc/machine-id:ro
+      #- /run/user/${PUID:-1000}/pulse:/run/user/${PUID:-1000}/pulse:rw
+      #- $HOME/.config/pulse:/home/${CONTAINER_USERNAME}/.config/pulse    runtime: nvidia
+
+      # dbus
+      #- /run/user/${PUID:-1000}/bus:/run/user/${PUID:-1000}/bus:ro
+      #- /run/dbus:/run/dbus:ro
+      #- /run/udev/data:/run/udev/data:ro
+    
+    #privileged: true
+
+    #network_mode: host
+
+    #security_opt:
+    #  - apparmor:unconfined
+
+    #stdin_open: true
+    #tty: true
+
+    #devices:
+    #  - /dev/snd 
+
+    #extra_hosts:
+    #  - "somehost=1.2.3.4"
+
+    #dns:
+    #  - 192.168.1.110
+
+    #dns_search:
+    #  - lan
+
+    #healthcheck:
+    #  #disable: true
+    #  test: ["CMD", "curl", "-f", "http://localhost"]
+    #  interval: 1m30s
+    #  timeout: 10s
+    #  retries: 3
+    #  start_period: 40s
+    #  start_interval: 5s
+
+    #depends_on:
+    #  - service1
+    #  - service2
+
+    # Se hai servizi da cui dipendere, scommenta e configura:
+    # depends_on:
+    #   service1:
+    #     condition: service_healthy
+    #   service2:
+    #     condition: service_started
+
+    # Per collegare il servizio ad una rete specifica, scommenta e configura:
+    # networks:
+    #   - my_network
+
+configs:
+  my_config:
+    file: ./my_config.txt
+
+secrets:
+  my_secret:
+    file: ./my_secret.txt
+    #cat /run/secrets/my_secret
+    
+# Definisci reti o volumi se necessari:
+# networks:
+#   my_network:
+#     external: true
+
+# volumes:
+#   data_volume:
